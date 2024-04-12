@@ -17,7 +17,7 @@ The **`f5-oidc-sso-simulator`** provides a OIDC/SSO simulation environment to te
   | Category                     | URI                                         |
   |------------------------------|---------------------------------------------|
   | **Redirect URI**             | `https://host.docker.internal:443/_codexch` |
-  | **Post Logout Redirect URI** | `https://host.docker.internal:443/_logout_` |
+  | **Post Logout Redirect URI** | `https://host.docker.internal:443/_logout`  |
 - [ ] **Clone** this repo
   ```bash
   git clone https://github.com/f5devcentral/f5-oidc-sso-simulator.git

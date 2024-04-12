@@ -93,6 +93,8 @@ Skip this step if you just want to locally run this environment with a Keycloak 
   | ID Token Claims | Access Token Claims | Proxied API Authorization |
   |-----------------|---------------------|---------------------------|
   | ![](./docs/img/oidc-id-token.png) | ![](./docs/img/oidc-access-token.png) | ![](./docs/img/oidc-api-authz.png) | 
+  > Note: Ensure **ID token** contains OIDC standard claim names of **`given_name, family_name, email`** for F5 **Distributed Cloud(XC)** Customers before configuring **F5 XC SSO**.
+
 
 ## 📚 References
 - [NGINX OIDC Core and App Examples for multiple Identity Providers](https://github.com/nginx-openid-connect)

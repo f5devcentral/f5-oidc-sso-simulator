@@ -28,7 +28,7 @@ The **`f5-oidc-sso-simulator`** provides a OIDC/SSO simulation environment to te
   $ sudo vi /etc/hosts
   127.0.0.1 host.docker.internal
   ```
-- [ ] **Nginx License**: [Download Nginx Plus license files](https://www.nginx.com/free-trial-request/), and copy `nginx-repo.crt` and `nginx-repo.key` to `./common/certs/`.
+- [ ] **Nginx Plus Free Trial**: [Download Nginx Plus license files](https://www.nginx.com/free-trial-request/), and copy `nginx-repo.crt` and `nginx-repo.key` to `./common/certs/`.
 
 ### 2. Configure a Simulator
 Skip this step if you just want to locally run this environment with a Keycloak bundle.

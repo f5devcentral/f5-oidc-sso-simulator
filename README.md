@@ -13,8 +13,8 @@ The **`f5-oidc-sso-simulator`** provides a OIDC/SSO simulation environment to te
 ## 🏠 Getting Started
 
 ### 1. Prerequisites
-- [ ] **IdP Setup**: Create an app in your IdP
-  | Category                     | URI                                         |
+- [ ] **IdP Setup**: Create an app in your IdP. Use the following URIs if you want to run this tool locally.
+  | Category                     | URI Example                                 |
   |------------------------------|---------------------------------------------|
   | **Redirect URI**             | `https://host.docker.internal:443/_codexch` |
   | **Post Logout Redirect URI** | `https://host.docker.internal:443/_logout`  |
@@ -64,7 +64,7 @@ Skip this step if you just want to locally run this environment with a Keycloak 
         default "my-client-id";
     }
     map $oidc_app_identifier $oidc_pkce_enable {
-        default 1;
+        default 1; # Set value with 0 if secret is needed.
     }
     map $oidc_app_identifier $oidc_client_secret {
         default "{{edit-your-client-secret-unless-pkce-enabled}}";
@@ -85,7 +85,7 @@ Skip this step if you just want to locally run this environment with a Keycloak 
   ![](./docs/img/make-watch.png)
 
 ### 4. Run a Web Browser and Test OIDC/SSO
-- [ ] Run a Web Browser with https://host.docker.internal and Click `Sign in` button:
+- [ ] Run a Web Browser with https://host.docker.internal and click `Sign in/out` button:
   | Landing Page | IdP Sign in | User Info after Sign-in |
   |--------------|-------------|-------------------------|
   | ![](./docs/img/oidc-landing-page.png) | ![](./docs/img/oidc-kc-login.png) | ![](./docs/img/oidc-logged-in.png) |
@@ -93,7 +93,10 @@ Skip this step if you just want to locally run this environment with a Keycloak 
   | ID Token Claims | Access Token Claims | Proxied API Authorization |
   |-----------------|---------------------|---------------------------|
   | ![](./docs/img/oidc-id-token.png) | ![](./docs/img/oidc-access-token.png) | ![](./docs/img/oidc-api-authz.png) | 
-  > Note: Ensure **ID token** contains OIDC standard claim names of **`given_name, family_name, email`** for F5 **Distributed Cloud(XC)** Customers before configuring **F5 XC SSO**.
+  > Note: 
+  > - Ensure **ID token** contains OIDC standard claim names of **`given_name, family_name, email`** for F5 **Distributed Cloud(XC)** Customers before configuring **F5 XC SSO**.
+  > - Authentication error will be occured with XC if your IdP doesn't return ID token.
+  > - User Account Information form will be shown in XC if your IdP doesn't contain standard claims.
 
 
 ## 📚 References

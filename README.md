@@ -96,7 +96,7 @@ Skip this step if you just want to locally run this environment with a Keycloak 
   > Note: 
   > - Ensure **ID token** contains OIDC standard claim names of **`given_name, family_name, email`** for F5 **Distributed Cloud(XC)** Customers before configuring **F5 XC SSO**.
   > - Authentication error will be occured with XC if your IdP doesn't return ID token.
-  > - User Account Information form will be shown in XC if your IdP doesn't contain standard claims.
+  > - User Account Information form will be shown in XC if the ID token doesn't contain standard claims.
 
 
 ## 📚 References

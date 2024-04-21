@@ -2,6 +2,22 @@ FROM ubuntu:18.04
 
 LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 
+#
+# Python3.8 install for Ubuntu
+#
+# ref: https://linuxize.com/post/how-to-install-python-3-8-on-ubuntu-18-04/
+RUN apt-get update
+RUN apt-get install -y software-properties-common
+RUN add-apt-repository ppa:deadsnakes/ppa
+RUN apt-get install -y python3.8 python3-pip
+# Update symlink to point to latest
+RUN rm /usr/bin/python3 && ln -s /usr/bin/python3.8 /usr/bin/python3
+RUN python3 --version
+RUN pip3 --version
+RUN pip3 install MarkupSafe==2.0.0
+RUN pip3 install requests
+RUN pip3 install Jinja2
+
 # Define NGINX versions for NGINX Plus and NGINX Plus modules
 # Uncomment this block and the versioned nginxPackages in the main RUN
 # instruction to install a specific release
@@ -177,15 +193,16 @@ RUN set -x \
     # Cleanup
     && apt-get remove --purge --auto-remove -y gnupg lsb-release apt-utils \  
     && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/nginx-plus.list \
-    && rm -rf /etc/apt/apt.conf.d/90nginx \
-    && rm -rf nginx_signing.key 
-
-# Remove the cert/keys from the image
-# && rm /etc/ssl/nginx/nginx-repo.crt /etc/ssl/nginx/nginx-repo.key
+    && rm -rf /etc/apt/apt.conf.d/90nginx   \
+    && rm -rf nginx_signing.key             \
+    && rm -rf /etc/ssl/nginx/nginx-repo.crt \
+    && rm -rf /etc/ssl/nginx/nginx-repo.key
 
 RUN    mkdir -p /etc/nginx/backend        \
     && mkdir -p /etc/nginx/conf.d         \
     && mkdir -p /etc/nginx/oidc           \
+    && mkdir -p /etc/nginx/idp            \
+    && mkdir -p /etc/nginx/init           \
     && mkdir -p /etc/nginx/template       \
     && mkdir -p /usr/share/nginx/html/css \
     && mkdir -p /var/lib/nginx/state
@@ -197,16 +214,18 @@ RUN    chmod -R 644 /etc/nginx
 RUN    chmod -R 644 /etc/nginx/conf.d
 RUN    chmod -R 644 /etc/nginx/oidc
 RUN    chmod -R 644 /etc/nginx/backend
+RUN    chmod -R 644 /etc/nginx/idp
+RUN    chmod -R 644 /etc/nginx/init
 RUN    chmod -R 644 /etc/nginx/template
 RUN    chmod -R 644 /usr/share/nginx/html/css
 
-# COPY (Nginx configuration) directory
 COPY  common/frontend/  /usr/share/nginx/html/
 COPY  common/backend/   /etc/nginx/backend/
 COPY  common/etc/nginx/ /etc/nginx/
 COPY  common/oidc/      /etc/nginx/oidc/
 COPY  common/template/  /etc/nginx/template/
+COPY  tools/python/     /etc/nginx/init/
+COPY  tools/sh/docker-entrypoint.sh /docker-entrypoint.sh
 
-# EXPOSE ports, HTTP 80, HTTPS 443 and, Nginx status page 8010
 STOPSIGNAL SIGTERM
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["bash", "/docker-entrypoint.sh"]

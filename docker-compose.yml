@@ -7,30 +7,14 @@ networks:
 
 services:
 
-  f5_oidc:
-    container_name: f5_oidc
-    build:
-      context: ./
-      dockerfile: ./docker/nginxplus-25-ubuntu18.04/Dockerfile
-    image: f5_oidc
-    ports:
-      - 443:443
-    volumes:
-      - ./common/backend:/etc/nginx/backend
-      - ./common/oidc:/etc/nginx/oidc
-      - ./common/template:/etc/nginx/template
-      - ./common/frontend:/usr/share/nginx/html/
-    networks:
-      - mynetwork
-
   keycloak:
     container_name: keycloak
     image: quay.io/keycloak/keycloak:24.0.2
     ports:
       - 8443:8443
     volumes:
-      - ./common/certs/oidc_simulator_temp.crt:/etc/x509/https/tls.crt
-      - ./common/certs/oidc_simulator_temp.key:/etc/x509/https/tls.key
+      - ./common/certs/oidc_simulator.crt:/etc/x509/https/tls.crt
+      - ./common/certs/oidc_simulator.key:/etc/x509/https/tls.key
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
@@ -39,5 +23,29 @@ services:
       KC_HTTPS_CERTIFICATE_KEY_FILE: /etc/x509/https/tls.key
     command:
       start-dev
+    networks:
+      - mynetwork
+
+  f5-oidc:
+    container_name: f5-oidc
+    build:
+      context: ./
+      dockerfile: ./docker/nginxplus-25-ubuntu18.04/Dockerfile
+    image: f5-oidc
+    ports:
+      - 443:443
+    volumes:
+      - ./common/backend:/etc/nginx/backend
+      - ./common/oidc:/etc/nginx/oidc
+      - ./common/template:/etc/nginx/template
+      - ./common/frontend:/usr/share/nginx/html/
+      - ./tools/python:/etc/nginx/init
+    env_file:
+      # Choose and update environment variable file per each IdP
+      # - path: ./examples/settings-okta.env
+      - path: ./examples/settings-keycloak.env
+        required: true
+    depends_on:
+      - keycloak
     networks:
       - mynetwork

@@ -1,0 +1,5 @@
+    listen {{ port }} ssl;
+    server_name {{ host }};
+
+    ssl_certificate     /etc/ssl/nginx/{{ cert }};
+    ssl_certificate_key /etc/ssl/nginx/{{ key }};

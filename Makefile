@@ -1,7 +1,7 @@
 .PHONY: start ps watch down clean-oidc clean-keycloak clean
 
 start:
-	bash generate-credentials.sh
+	bash ./tools/sh/gen-cert-and-key.sh
 	docker-compose up -d
 
 ps:
@@ -14,14 +14,11 @@ down:
 	docker-compose down
 
 clean-oidc:
-	docker kill f5_oidc_simulator
-	docker rmi --force f5_oidc_simulator
+	bash ./tools/sh/clean-app.sh f5-oidc
 
 clean-keycloak:
-	docker kill keycloak
-	docker rmi --force quay.io/keycloak/keycloak:24.0.2
+	bash ./tools/sh/clean-app.sh keycloak
 
 clean: 
-	docker kill $$(docker ps -q) 2> /dev/null || true
-	docker system prune -a
-	docker volume rm $(docker volume ls -qf dangling=true)
+	bash ./tools/sh/clean-app.sh keycloak
+	bash ./tools/sh/clean-app.sh f5-oidc

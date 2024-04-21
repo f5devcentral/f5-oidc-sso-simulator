@@ -1,0 +1,140 @@
+# ---------------------------------------------------------------------------- #
+#                                                                              #
+#                     IDP Configuration for OpenID Connect                     #
+#                            (within http block)   |                           #
+#                                                  |                           #
+#              http {                              |                           #
+#                    :                             |                           #
+#                  +--------------------------+    |                           #
+#                  | include "oidc_idp.conf"; | <--+                           #
+#                  +--------------------------+                                #
+#                    :                                                         #
+#                  server {                                                    #
+#                      :                                                       #
+#                  }                                                           #
+#                    :                                                         #
+#              }                                                               #
+#                                                                              #
+# - This file is to configure IDP related info to handle OIDC workflow.        #
+# - Each map block allows multi values so that multiple IdPs can be supported. #
+#                                                                              #
+# ---------------------------------------------------------------------------- #
+
+# ---------------------------------------------------------------------------- #
+#   1. OpenID Provider(IDP) Metadata Configuration via Well-Known Endpoints    #
+# ---------------------------------------------------------------------------- #
+
+map $x_client_id $oidc_app_identifier {
+    default my-keycloak-24-app;
+}
+
+map $oidc_app_identifier $idp_domain {
+    default host.docker.internal:8443/realms/master/protocol/openid-connect;
+}
+
+map $oidc_app_identifier $oidc_authz_endpoint {
+    default {{ oidc_authz_endpoint }};
+}
+
+map $oidc_app_identifier $oidc_jwt_keyfile {
+    default {{ oidc_jwt_keyfile }};
+}
+
+map $oidc_app_identifier $oidc_logout_endpoint {
+    default {{ oidc_logout_endpoint }};
+}
+
+map $oidc_app_identifier $oidc_token_endpoint {
+    default {{ oidc_token_endpoint }};
+}
+
+map $oidc_app_identifier $oidc_userinfo_endpoint {
+    default {{ oidc_userinfo_endpoint }};
+}
+
+map $oidc_app_identifier $oidc_scopes {
+    default {{ oidc_scopes }};
+}
+
+# ---------------------------------------------------------------------------- #
+#   2. Custom Configuration for Well-Known OIDC Endpoints                      #
+# ---------------------------------------------------------------------------- #
+
+map $oidc_app_identifier $oidc_authz_path_params_enable {
+    default 0;
+}
+
+map $oidc_app_identifier $oidc_authz_path_params {
+    default "";
+}
+
+map $oidc_app_identifier $oidc_authz_query_params_enable {
+    default 0;
+}
+
+map $oidc_app_identifier $oidc_authz_query_params {
+    default "";
+}
+
+map $oidc_app_identifier $oidc_logout_path_params_enable {
+    default 0;
+}
+
+map $oidc_app_identifier $oidc_logout_path_params {
+    default "";
+}
+
+map $oidc_app_identifier $oidc_logout_query_params_enable {
+    default 0; # 0: OIDC RP-initiated logout, 1: custom logout
+}
+
+map $oidc_app_identifier $oidc_logout_query_params {
+    default "";
+}
+
+map $oidc_app_identifier $oidc_token_path_params_enable {
+    default 0;
+}
+
+map $oidc_app_identifier $oidc_token_path_params {
+    default "";
+}
+
+map $oidc_app_identifier $oidc_token_query_params_enable {
+    default 0;
+}
+
+map $oidc_app_identifier $oidc_token_query_params {
+    default "";
+}
+
+
+# ---------------------------------------------------------------------------- #
+#   3. Advanced OIDC Configuration                                             #
+# ---------------------------------------------------------------------------- #
+
+map $oidc_app_identifier $oidc_client {
+    default {{ oidc_client }};
+}
+
+map $oidc_app_identifier $oidc_pkce_enable {
+    default {{ oidc_pkce_enable }};
+}
+
+map $oidc_app_identifier $oidc_client_secret {
+    default {{ oidc_client_secret }};
+}
+
+map $oidc_app_identifier $oidc_logout_redirect {
+    default "/_logout"; # This is called by IdP after successful logout.
+}
+
+map $oidc_app_identifier $oidc_hmac_key {
+    default "ChangeMe"; # This should be unique for every NGINX instance/cluster
+}
+
+map $oidc_app_identifier $oidc_app_name {
+    default "optional-edit-your-idp-app-name";
+}
+
+# vim: syntax=nginx

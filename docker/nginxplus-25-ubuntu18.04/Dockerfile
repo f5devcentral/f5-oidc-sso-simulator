@@ -33,8 +33,8 @@ ENV PKG_RELEASE   1~bionic
 # Download certificate and key from the customer portal https://account.f5.com/myf5
 # and copy to the build context and set correct permissions
 RUN  mkdir -p /etc/ssl/nginx
-COPY common/certs/*.crt /etc/ssl/nginx/
-COPY common/certs/*.key /etc/ssl/nginx/
+COPY myconfig/certs/*.crt /etc/ssl/nginx/
+COPY myconfig/certs/*.key /etc/ssl/nginx/
 
 RUN set -x \
     && chmod 644 /etc/ssl/nginx/* \

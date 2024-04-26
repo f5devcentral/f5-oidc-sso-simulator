@@ -26,8 +26,8 @@ function generate_cert_and_key {
         keyFile=${DEFAULT_OIDC_SIMULATOR_KEY}
     fi
 
-    local certDirFile="./common/certs/${certFile}"
-    local keyDirFile="./common/certs/${keyFile}"
+    local certDirFile="./myconfig/certs/${certFile}"
+    local keyDirFile="./myconfig/certs/${keyFile}"
 
     echo "Start generating cert and key for F5 OIDC/SSO simulator"
     openssl req -x509                                      \

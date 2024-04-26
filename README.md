@@ -28,50 +28,19 @@ The **`f5-oidc-sso-simulator`** provides a OIDC/SSO simulation environment to te
   $ sudo vi /etc/hosts
   127.0.0.1 host.docker.internal
   ```
-- [ ] **Nginx Plus Free Trial**: [Download Nginx Plus license files](https://www.nginx.com/free-trial-request/), and copy `nginx-repo.crt` and `nginx-repo.key` to `./common/certs/`.
+- [ ] **Nginx Plus Free Trial**: [Download Nginx Plus license files](https://www.nginx.com/free-trial-request/), and copy `nginx-repo.crt` and `nginx-repo.key` to `./myconfig/certs/`.
 
 ### 2. Configure a Simulator
-Skip this step if you just want to locally run this environment with a Keycloak bundle.
-- [ ] **DNS**: Edit your DNS resolver in `template/oidc_dns_resolver.conf` as the following example:
-  ```nginx
-    resolver  127.0.0.11;  # For local Docker DNS lookup
-    #resolver 8.8.8.8;     # For DNS lookup of external IDP endpoint
+- [ ] Create a file (e.g., `./myconfig/settings-xxx.env`) that contains environment variables by referencing [./myconfig/settings-bundle.env](./myconfig/settings-bundle.env).
+
+- [ ] Edit environment variables.
+  ```bash
+  IDP_CLIENT_ID=${edit-your-idp-app-client-id}
+  IDP_CLIENT_SECRET=${edit-your-IDP_CLIENT_SECRET}
+  IDP_WELL_KNOWN_ENDPOINTS=${edit-your-idp-well-known-endpoint}
+  IDP_PKCE_ENABLE=true <- set to false if you want to use credentials
+  IDP_DNS_RESOLVER=${edit-your-DNS-resolver-IP-address}
   ```
-- [ ] **IdP Endpoints**: Edit `template/oidc_idp.conf`
-  ```nginx
-    map $oidc_app_identifier $idp_domain {
-        default host.docker.internal:8443/realms/master/protocol/openid-connect;
-    }
-    map $oidc_app_identifier $oidc_authz_endpoint {
-        default https://$idp_domain/auth;
-    }
-    map $oidc_app_identifier $oidc_jwt_keyfile {
-        default https://$idp_domain/certs;
-    }
-    map $oidc_app_identifier $oidc_logout_endpoint {
-        default https://$idp_domain/logout;
-    }
-    map $oidc_app_identifier $oidc_token_endpoint {
-        default https://$idp_domain/token;
-    }
-    map $oidc_app_identifier $oidc_userinfo_endpoint {
-        default https://$idp_domain/userinfo;
-    }
-    map $oidc_app_identifier $oidc_scopes {
-        default "openid+profile+email";
-    }
-    map $oidc_app_identifier $oidc_client {
-        default "my-client-id";
-    }
-    map $oidc_app_identifier $oidc_pkce_enable {
-        default 1; # Set value with 0 if secret is needed.
-    }
-    map $oidc_app_identifier $oidc_client_secret {
-        default "{{edit-your-client-secret-unless-pkce-enabled}}";
-    }
-  ```
-- [ ] **Host & Certs**: Edit `template/oidc_proxy_host_certs.conf`
-- [ ] **Config Automation**: TBD via `well-known endpoint`.
 
 ### 3. Run the Simulator as Docker Containers
 - [ ] **Start** Docker containers:

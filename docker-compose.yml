@@ -13,8 +13,8 @@ services:
     ports:
       - 8443:8443
     volumes:
-      - ./common/certs/oidc_simulator.crt:/etc/x509/https/tls.crt
-      - ./common/certs/oidc_simulator.key:/etc/x509/https/tls.key
+      - ./myconfig/certs/oidc_simulator.crt:/etc/x509/https/tls.crt
+      - ./myconfig/certs/oidc_simulator.key:/etc/x509/https/tls.key
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
@@ -42,8 +42,9 @@ services:
       - ./tools/python:/etc/nginx/init
     env_file:
       # Choose and update environment variable file per each IdP
-      # - path: ./examples/settings-okta.env
-      - path: ./examples/settings-keycloak.env
+      # - path: ./myconfig/settings-okta.env
+      # - path: ./myconfig/settings-keycloak.env
+      - path: ./myconfig/settings.env
         required: true
     depends_on:
       - keycloak

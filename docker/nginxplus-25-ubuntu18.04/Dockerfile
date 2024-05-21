@@ -12,6 +12,7 @@ RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt-get install -y python3.8 python3-pip
 # Update symlink to point to latest
 RUN rm /usr/bin/python3 && ln -s /usr/bin/python3.8 /usr/bin/python3
+RUN pip3 install --upgrade pip
 RUN python3 --version
 RUN pip3 --version
 RUN pip3 install MarkupSafe==2.0.0

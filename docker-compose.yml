@@ -40,12 +40,10 @@ services:
       - ./common/template:/etc/nginx/template
       - ./common/frontend:/usr/share/nginx/html/
       - ./tools/python:/etc/nginx/init
-    env_file:
-      # Choose and update environment variable file per each IdP
-      # - path: ./myconfig/settings-okta.env
-      # - path: ./myconfig/settings-keycloak.env
-      - path: ./myconfig/settings.env
-        required: true
+    # Choose and update environment variable file per each IdP
+    # env_file: ./myconfig/settings-okta.env
+    # env_file: ./myconfig/settings-keycloak.env
+    env_file: ./myconfig/settings.env
     depends_on:
       - keycloak
     networks:

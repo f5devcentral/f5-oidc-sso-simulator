@@ -38,7 +38,7 @@ The **`f5-oidc-sso-simulator`** provides a OIDC/SSO simulation environment to te
   IDP_CLIENT_ID=${edit-your-idp-app-client-id}
   IDP_CLIENT_SECRET=${edit-your-IDP_CLIENT_SECRET}
   IDP_WELL_KNOWN_ENDPOINTS=${edit-your-idp-well-known-endpoint}
-  IDP_PKCE_ENABLE=true <- set to false if you want to use credentials
+  IDP_PKCE_ENABLE=true <- set to false if you want to use client secret
   IDP_DNS_RESOLVER=${edit-your-DNS-resolver-IP-address}
   ```
 

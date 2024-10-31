@@ -6,4 +6,5 @@ oidc_credentials.conf
 .DS_Store
 docker/build-context/data
 *.swp
+.swo
 __pycache__/

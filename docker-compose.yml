@@ -7,17 +7,39 @@ networks:
 
 services:
 
+  # IdP for simulating OIDC/SSO w/ Keycloak 14
   keycloak:
     container_name: keycloak
-    image: quay.io/keycloak/keycloak:24.0.2
+    image: quay.io/keycloak/keycloak:14.0.0 # 24.0.0 for testing new version
     ports:
       - 8443:8443
     volumes:
       - ./myconfig/certs/oidc_simulator.crt:/etc/x509/https/tls.crt
       - ./myconfig/certs/oidc_simulator.key:/etc/x509/https/tls.key
     environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: password
+      KEYCLOAK_HOST: host.docker.internal
+      KEYCLOAK_HTTPS: true
+      HTTPS_PORT: 8443
+      KC_HOSTNAME: host.docker.internal
+      KC_HTTPS_CERTIFICATE_FILE: /etc/x509/https/tls.crt
+      KC_HTTPS_CERTIFICATE_KEY_FILE: /etc/x509/https/tls.key
+    networks:
+      - mynetwork
+
+  # IdP for simulating OIDC/SSO from Keycloak 14 IdP Broker to Keycloak 24
+  keycloak24:
+    container_name: keycloak24
+    image: quay.io/keycloak/keycloak:24.0.0
+    ports:
+      - 10024:8443
+    volumes:
+      - ./myconfig/certs/oidc_simulator.crt:/etc/x509/https/tls.crt
+      - ./myconfig/certs/oidc_simulator.key:/etc/x509/https/tls.key
+    environment:
       KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
       KC_HOSTNAME: host.docker.internal
       KC_HTTPS_CERTIFICATE_FILE: /etc/x509/https/tls.crt
       KC_HTTPS_CERTIFICATE_KEY_FILE: /etc/x509/https/tls.key

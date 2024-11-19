@@ -33,6 +33,7 @@ function generate_cert_and_key {
     openssl req -x509                                      \
         -out    ${certFile}                                \
         -keyout ${keyFile}                                 \
+        -days   180                                        \
         -newkey rsa:2048 -nodes -sha256                    \
         -subj '/CN='${hostName} -extensions EXT -config <( \
         printf "[dn]\nCN=${hostName}\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:${hostName}\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")

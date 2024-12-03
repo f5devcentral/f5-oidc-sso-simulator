@@ -50,6 +50,10 @@ class IdPConfig:
         temp = env.get("IDP_CLIENT_SECRET")
         self.oidc_client_secret = temp if temp else BUNDLE_IDP_CLIENT_SECRET
 
+        temp = env.get("IDP_LOGOUT_QUERY_PARAMS")
+        self.oidc_logout_query_params_enable = True if temp else False
+        self.oidc_logout_query_params = f"'{temp}'" if temp else '""'
+
         temp = env.get("IDP_PKCE_ENABLE")
         self.oidc_pkce_enable = bool(temp) if temp else True
 

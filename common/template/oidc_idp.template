@@ -85,11 +85,11 @@ map $oidc_app_identifier $oidc_logout_path_params {
 }
 
 map $oidc_app_identifier $oidc_logout_query_params_enable {
-    default 0; # 0: OIDC RP-initiated logout, 1: custom logout
+    default {{ oidc_logout_query_params_enable }}; # 0: OIDC RP-initiated logout, 1: custom logout
 }
 
 map $oidc_app_identifier $oidc_logout_query_params {
-    default "";
+    default {{ oidc_logout_query_params }};
 }
 
 map $oidc_app_identifier $oidc_token_path_params_enable {

@@ -28,15 +28,17 @@ class NginxConfig:
     def generate_oidc_idp_conf(self):
         self.generate_conf_from_template(
             OIDC_IDP_JINJA, OIDC_IDP_CONF,
-            oidc_authz_endpoint    = self.idp_config.oidc_authz_endpoint,
-            oidc_jwt_keyfile       = self.idp_config.oidc_jwt_keyfile,
-            oidc_logout_endpoint   = self.idp_config.oidc_logout_endpoint,
-            oidc_token_endpoint    = self.idp_config.oidc_token_endpoint,
-            oidc_userinfo_endpoint = self.idp_config.oidc_userinfo_endpoint,
-            oidc_scopes            = self.idp_config.oidc_scopes,
-            oidc_client            = self.idp_config.oidc_client,
-            oidc_pkce_enable       = int(self.idp_config.oidc_pkce_enable),
-            oidc_client_secret     = self.idp_config.oidc_client_secret
+            oidc_authz_endpoint             = self.idp_config.oidc_authz_endpoint,
+            oidc_jwt_keyfile                = self.idp_config.oidc_jwt_keyfile,
+            oidc_logout_endpoint            = self.idp_config.oidc_logout_endpoint,
+            oidc_token_endpoint             = self.idp_config.oidc_token_endpoint,
+            oidc_userinfo_endpoint          = self.idp_config.oidc_userinfo_endpoint,
+            oidc_logout_query_params_enable = int(self.idp_config.oidc_logout_query_params_enable),
+            oidc_logout_query_params        = self.idp_config.oidc_logout_query_params,
+            oidc_scopes                     = self.idp_config.oidc_scopes,
+            oidc_client                     = self.idp_config.oidc_client,
+            oidc_pkce_enable                = int(self.idp_config.oidc_pkce_enable),
+            oidc_client_secret              = self.idp_config.oidc_client_secret
         )
 
     def generate_proxy_host_certs_conf(self):

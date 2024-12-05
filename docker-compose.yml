@@ -22,9 +22,13 @@ services:
       KEYCLOAK_HOST: host.docker.internal
       KEYCLOAK_HTTPS: true
       HTTPS_PORT: 8443
+      KC_PROXY: edge
+      PROXY_ADDRESS_FORWARDING: true
       KC_HOSTNAME: host.docker.internal
       KC_HTTPS_CERTIFICATE_FILE: /etc/x509/https/tls.crt
       KC_HTTPS_CERTIFICATE_KEY_FILE: /etc/x509/https/tls.key
+      # JAVA_OPTS: -Djavax.net.ssl.trustStore=NONE -Dcom.sun.net.ssl.checkRevocation=false
+      JAVA_OPTS: -Dcom.sun.net.ssl.checkRevocation=false
     networks:
       - mynetwork
 

@@ -35,6 +35,7 @@ export default {
     redirectPostLogin,
     redirectPostLogout,
     tokenEncoder,
+    userInfo,
     validateIdToken,
     validateAccessToken,
     validateSession
@@ -91,10 +92,12 @@ function codeExchange(r) {
         return
     }
     setTokenParams(r)
+    r.log('#### start calling token endpoint: ')
     r.subrequest('/_token', getTokenArgs(r),
         function(res) {
             var isErr = handleTokenErrorResponse(r, res)
             if (isErr) {
+                r.log('#### handleTokenErrorResponse: err ')
                 clearTokenParams(r)
                 return
             }
@@ -350,6 +353,8 @@ function handleSuccessfulRefreshResponse(r, res) {
         r.variables.session_id   = r.variables.cookie_session_id
         r.variables.id_token     = tokenset.id_token;
         r.variables.access_token = tokenset.access_token;
+        r.log('####### id_token    : ' + r.variables.id_token)
+        r.log('####### access token: ' + r.variables.access_token)
 
         // Update new refresh token to key/value store if we got a new one.
         r.log(INF_REFRESH_TOKEN + r.variables.cookie_session_id);
@@ -442,7 +447,7 @@ function handleTokenErrorResponse(r, res) {
         try {
             var errset = JSON.parse(res.responseBody);
             if (errset.error) {
-                r.error('OIDC error from IdP when sending AuthZ code: ' +
+                r.error('#### OIDC error from IdP when sending AuthZ code: ' +
                     errset.error + ', ' + errset.error_description);
             } else {
                 r.error(ERR_IDP_AUTH + statusMsg + res.responseBody);
@@ -476,6 +481,9 @@ function handleSuccessfulTokenResponse(r, res) {
         r.variables.session_id       = generateSession(r)
         r.variables.new_id_token     = tokenset.id_token;
         r.variables.new_access_token = tokenset.access_token;
+        
+        r.log('###### new_id_token:   ' + r.variables.new_id_token);
+        r.log('###### new access token: ' + r.variables.new_access_token);
 
         // Add new refresh token to key/value store
         if (tokenset.refresh_token) {
@@ -941,4 +949,15 @@ function jwt(data) {
         .map(v=>Buffer.from(v, 'base64url').toString())
         .map(JSON.parse)
     return { headers: parts[0], payload: parts[1]}
+}
+
+/**
+ * Return user information
+ *
+ * @param r {Request} HTTP request object
+ * @returns {string} user information
+ */
+function userInfo(r) {
+    const payload = jwt(r.variables.access_token).payload
+    return JSON.stringify(payload);
 }
